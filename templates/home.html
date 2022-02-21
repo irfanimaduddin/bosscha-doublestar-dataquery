@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}
+    BZDS Data Archive
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+        <h1 style="width: 100%; margin-top: 1rem; margin-bottom: 0.5rem; font-size: 2.5rem; font-weight: 500; line-height: 1.2;">
+            Welcome to Bosscha Observatory Zeiss' Double Star (BZDS) Data Archive
+        </h1>
+    <div class="container-fluid" style="margin-top: 2rem; margin-left: 20px; margin-bottom: 0.5rem; font-size: 1rem; font-weight: 500; line-height: 1.2;">
+        <p>Bosscha Observatory Zeiss' Double Star (BZDS) Data Archive is an archive of visual double star observation data observed at Bosscha Observatory and compiled by Jasinta (1995). 5431 double star pairs had been known its physical probability by cross matching the pairs with Harshaw (2018). This work was successfully carried out by Imaduddin et al. (2022).</p>
+        <p>This website contains two tables. The first table is on the main page (this page). This table contains a list of pairs that have been observed at the Bosscha Observatory. Each object is divided into several physical categories with probability values:</p>
+        <p>- <b>Physical</b> (probability > 85% for "Y" and 65% < probability < 85% for "Y?"): 2074 pairs<br>- <b>Maybe</b> (50% < probability < 65%): 138 pairs<br>- <b>Questionable/??</b> (35% < probability < 50%): 88 pairs<br>- <b>No</b> (0% < probability < 35%): 129 pairs<br>- <b>Unknown/Unk</b>: 3002 pairs<br></p>
+        <p>To get separation and position angle values of each pair and also the observation time (epoch), select the object on the first table. After that, an additional page for the object will appear. This page contains general information about the pair and all observational data that have been carried out and the orbital visualization. If you need all the data, you can download it on this <a href="http://bit.ly/bosscha_doublestar_nov2021", target="_blank"><nobr>link</nobr></a>.</p>
+    </div>
+    <div class="card-body" style="width: 100%;">
+        <div class="table-responsive">
+            <table id="result_list" class="table table-striped table-bordered" style="width:100%" data-search-align="right">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="th-sm">JAS97 Name</th>
+                        <th class="th-sm">Discoverer</th>
+                        <th class="th-sm">RA</th>
+                        <th class="th-sm">DEC</th>
+                        <th class="th-sm">Gmag A</th>
+                        <th class="th-sm">Gmag B</th>
+                        <th class="th-sm">Gaia Sep</th>
+                        <th class="th-sm">Gaia PA</th>
+                        <th class="th-sm">Probability</th>
+                        <th class="th-sm">Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for instance in queryset %}
+                    <tr>
+                        <td>{{instance.jasname}}</td>
+                        <td><a href="{{instance.get_absolute_url}}">{{instance.discoverer}}</a></td>
+                        <!-- <td>{{instance.discoverer}}</td> -->
+                        <td>{{instance.ra}}</td>
+                        <td>{{instance.decl}}</td>
+                        <td>{{instance.gmaga}}</td>
+                        <td>{{instance.gmagb}}</td>
+                        <td>{{instance.gaia_sep}}</td>
+                        <td>{{instance.gaia_pa}}</td>
+                        <td>{{instance.probability}}</td>
+                        <td>{{instance.cat}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div id="footer"></div>
+</div>    
+
+<script>
+    $(document).ready(function() {
+        var table = $("#result_list").DataTable({
+            //default is lfrtip 
+            "aLengthMenu": [10, 25, 50, 100],
+            "deferRender": true,
+            "dom": '<"top"Bf<"clear">>rt<"bottom"lip<"clear">>',
+            language: {
+                searchBuilder: {
+                    button: 'Filter',
+                    title: 'Filter',
+                }
+            },
+            buttons: [
+                {
+                    extend: 'searchBuilder',
+                    titleAttr: 'Filter data',
+                },
+                {
+                    extend: 'collection',
+                    text: 'Export',
+                    titleAttr: 'Export data',
+                    autoClose: true,
+                    buttons: [
+                        {
+                            extend: 'csvHtml5',
+                            text: '<i class="fa fa-file-text-o"></i>',
+                            titleAttr: 'CSV',
+                            fieldSeparator: ';',
+                            className: 'csvButton',
+                            messageTop: 'The information in this table is copyright to Sirius Cybernetics Corp.',
+                            filename: function(){
+                                var d = new Date();
+                                var dateStr =
+                                    d.getFullYear() + 
+                                    ("00" + (d.getMonth() + 1)).slice(-2) +
+                                    ("00" + d.getDate()).slice(-2) +
+                                    ("00" + d.getHours()).slice(-2) +
+                                    ("00" + d.getMinutes()).slice(-2) + 
+                                    ("00" + d.getSeconds()).slice(-2);
+                                return 'BZDS_' + dateStr;
+                            },
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            titleAttr: 'Excel',
+                            text: '<i class="fa fa-file-excel-o"></i>',
+                            className: 'excelButton',
+                            filename: function(){
+                                var d = new Date();
+                                var dateStr =
+                                    d.getFullYear() + 
+                                    ("00" + (d.getMonth() + 1)).slice(-2) +
+                                    ("00" + d.getDate()).slice(-2) +
+                                    ("00" + d.getHours()).slice(-2) +
+                                    ("00" + d.getMinutes()).slice(-2) + 
+                                    ("00" + d.getSeconds()).slice(-2);
+                                return 'BZDS_' + dateStr;
+                            },
+                        }
+                    ]
+                }
+            ]
+        });
+
+        //lengthmenu -> add a margin to the right and reset clear 
+        $(".dataTables_length").css('clear', 'none');
+        $(".dataTables_length").css('margin-right', '20px');
+        $(".dataTables_length").css('margin-top', '10px');
+
+        //info -> reset clear and padding
+        $(".dataTables_info").css('clear', 'none');
+        $(".dataTables_info").css('margin-top', '0px');
+
+        //searchBuilder
+        $(".dt-button").css('background-color', '#343a40');
+        $(".dt-button").css('color', '#fff');
+
+        //Export Button
+        $("button.dt-button span.dt-down-arrow").css('color', '#fff')
+
+        //Export Child Button
+        // $("body > div.container-fluid > div.card-body > div.table-responsive > div#result_list_wrapper.dataTables_wrapper.no-footer > div.top > div.dt-buttons > div.dt-button-collection").css('background-color', '#343a40')
+        // $("body > div.container-fluid > div.card-body > div.table-responsive > div#result_list_wrapper.dataTables_wrapper.no-footer > div.top > div.dt-buttons > div.dt-button-collection > div > button.dt-button.buttons-csv.buttons-html5").css('background-color', '#343a40')
+    });
+</script>
+{% endblock %}

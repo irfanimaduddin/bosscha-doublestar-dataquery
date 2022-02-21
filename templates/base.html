@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+        
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" width=device-width, initial-scale=1.0>
+
+        <!-- CSS Core -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'DataTables/DataTables-1.11.3/css/jquery.dataTables.min.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'DataTables/SearchBuilder-1.3.0/css/searchBuilder.dataTables.min.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'DataTables/SearchBuilder-1.3.0/css/searchBuilder.bootstrap4.min.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'DataTables/Buttons-2.0.1/css/buttons.dataTables.min.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+ 
+        <!-- CSS Custom -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+        <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/> -->
+        
+        <!-- JS Core (JQuery, Bootstrap) -->
+        <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'DataTables/DataTables-1.11.3/js/jquery.dataTables.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'DataTables/SearchBuilder-1.3.0/js/dataTables.searchBuilder.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'DataTables/SearchBuilder-1.3.0/js/searchBuilder.bootstrap4.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'DataTables/Buttons-2.0.1/js/dataTables.buttons.min.js' %}"></script>
+        
+        
+        <script type="text/javascript" src="{% static 'DataTables/JSZip-2.5.0/jszip.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'DataTables/Buttons-2.0.1/js/buttons.html5.min.js' %}"></script>
+        <!-- <script type="text/javascript" src="{% static 'DataTables/DateTime-1.1.1/js/dataTables.dateTime.min.js' %}"></script> -->
+        <!-- <script type="text/javascript" src="{% static 'DataTables/pdfmake-0.1.36/vfs_fonts.js' %}"></script> -->
+        <!-- <script type="text/javascript" src="{% static 'DataTables/Buttons-2.0.1/js/buttons.print.min.js' %}"></script> -->
+
+        <!-- HTML page title -->
+        <title>{% block title %}{% endblock %}</title>
+
+    </head>
+
+    <body>
+        <!-- Header -->
+        <!-- Navbar content -->
+        <nav class="container-fluid navbar navbar-dark bg-dark" style="height: 60px;">
+            <a class="navbar-brand" href="/">
+                <!-- <img src="/docs/4.2/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt=""> -->
+                BZDS Home
+            </a>
+        </nav>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
